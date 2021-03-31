@@ -6,27 +6,12 @@ var app = express();
 
 app.use( cors() );
 
-var users = {
-  "rodrigo": {
-    nome: 'Rodrigo',
-    idade: 41
-  },
-  "rafaela": {
-    nome: 'Rafaela',
-    idade: 7
-  },
-  "charles": {
-    nome: 'Charles',
-    idade: 12
-  }
-}
-
 app.get( '/', function( req, res ) {
   res.send('<h1>Teste</h1>');
 });
 
-app.get( '/user', function( req, res ) {
-  res.send('user');
+app.get( '/user', function( req, res ) {  
+  res.send( 'user' );
 });
 
 app.get( '/user/:username', function( req, res ) {
