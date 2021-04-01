@@ -18,7 +18,7 @@
 
   ajax.open( 'POST', 'http://localhost:3000/user' );
   ajax.setRequestHeader( 
-    'Content-type', 'application/x-www.form.urlencoded' 
+    'Content-type', 'application/x-www-form-urlencoded' 
   );
   ajax.send( 'username=irma&age=67' );
 
