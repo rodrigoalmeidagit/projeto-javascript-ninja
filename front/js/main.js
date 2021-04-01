@@ -2,28 +2,31 @@
 
   'use strict';
 
-  var $input = document.querySelector( '[data-js="input"]' );
-  var $button = document.querySelector( '[data-js="button"]' );
-  var $body = document.querySelector( '[data-js="body"]' );
   var ajax = new XMLHttpRequest();
   
-  $button.addEventListener( 'click', function (e) {
-    var name = $input.value;
-    var data = ajax.responseText;
-    ajax.open( 'GET', `http://localhost:3000/user`)
-    ajax.send();
-    var body = document.createElement( 'h1' )
-    body.textContent = `${data}`
-    document.body.appendChild( body )
+  // $button.addEventListener( 'click', function (e) {
+  //   ajax.open( 'GET', `http://localhost:3000/user` )
+  //   ajax.send();
+  // }, false )
 
-  }, false )
+  // ajax.addEventListener( 'readystatechange', function( e ) {
+  //   e.preventDefault()
+  //   if( ajax.readyState === 4  ) {
+  //     return ajax.responseText, ajax.status;
+  //   }
+  // }, false)
 
+  ajax.open( 'POST', 'http://localhost:3000/user' );
+  ajax.setRequestHeader( 
+    'Content-type', 'application/x-www.form.urlencoded' 
+  );
+  ajax.send( 'username=irma&age=67' );
 
-  ajax.addEventListener( 'readystatechange', function(e) {
-    e.preventDefault()
-    if( ajax.readyState === 4  ) {
-      return ajax.responseText, ajax.status;
+  console.log( 'Cadastrando usuário...' );
+
+  ajax.onreadystatechange = function() {
+    if( ajax.readyState === 4 ) {
+      console.log( 'Usuário cadastrado!', ajax.responseText );
     }
-  }, false)
-
+  };
 })();
