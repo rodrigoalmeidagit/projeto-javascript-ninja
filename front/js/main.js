@@ -1,32 +1,50 @@
-( function() {
+(function () {
 
   'use strict';
 
-  var ajax = new XMLHttpRequest();
-  
-  // $button.addEventListener( 'click', function (e) {
-  //   ajax.open( 'GET', `http://localhost:3000/user` )
-  //   ajax.send();
-  // }, false )
+  var $button = document.querySelector('[data-js="button"]');
+  var $input = document.querySelector('[data-js="input"]');
 
-  // ajax.addEventListener( 'readystatechange', function( e ) {
-  //   e.preventDefault()
-  //   if( ajax.readyState === 4  ) {
-  //     return ajax.responseText, ajax.status;
-  //   }
-  // }, false)
-
-  ajax.open( 'POST', 'http://localhost:3000/user' );
-  ajax.setRequestHeader( 
-    'Content-type', 'application/x-www-form-urlencoded' 
+  // REQUISIÇÃO POST
+  var post = new XMLHttpRequest();
+  post.open('POST', 'http://localhost:3000/user');
+  post.setRequestHeader(
+    'Content-type', 'application/x-www-form-urlencoded'
   );
-  ajax.send( 'username=irma&age=67' );
+  post.send('username=roberto&name=Roberto&age=32');
 
-  console.log( 'Cadastrando usuário...' );
+  console.log('Cadastrando usuário...');
 
-  ajax.onreadystatechange = function() {
-    if( ajax.readyState === 4 ) {
-      console.log( 'Usuário cadastrado!', ajax.responseText );
+  post.onreadystatechange = function () {
+    if (post.readyState === 4) {
+      console.log('Usuário cadastrado!', post.responseText);
     }
   };
+
+  // REQUISIÇÃO GET
+  const getUser = function (e) {
+    var get = new XMLHttpRequest();
+    var user = $input.value;
+    get.open('GET', `http://localhost:3000/user/${user}`);
+    get.send();
+
+    get.onreadystatechange = function () {
+      if (get.readyState === 4) {
+        console.log(JSON.parse(get.responseText));
+      }
+    };
+  }
+
+  $button.addEventListener('click', getUser, false)
+
+  post.addEventListener('readystatechange', function (e) {
+    e.preventDefault()
+    if (post.readyState === 4) {
+      return post.responseText, post.status;
+    }
+  }, false)
+
+
+
+
 })();

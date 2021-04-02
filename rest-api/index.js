@@ -8,20 +8,15 @@ var app = express();
 app.use( bodyParser.urlencoded( { extended: false } ) );
 app.use( cors() );
 
-var users = {
-  rodrigo: {
-    username: 'Rodrigo',
-    age: 41
-  },
-  rafaela: {
-    username: 'Rafaela',
-    age: 7
-  },
-  charles: {
-    username: 'Charles',
-    age: 12
-  }
-}
+var users = [{
+  username: 'rodrigo',
+  name: 'Rodrigo',
+  age: 41
+},{
+  username: 'charles',
+  name: 'Charles',
+  age: 12
+}];
 
 app.get( '/', function ( req, res ) {
   res.json( { response: 'Home' } );
@@ -33,8 +28,13 @@ app.get( '/user', function ( req, res ) {
 
 app.get( '/user/:username', function ( req, res ) {
   var username = req.params.username;
-  if ( users[ username ] ) {
-    return res.json( users[ username ] );
+  var hasUser = users.some( function( user ) {
+    return user.username === username;
+  })  
+  if ( hasUser ) {
+    return res.json( users.filter( function( user ) {
+      return user.username === username;
+    })[ 0 ] );
   }
   res.status( 404 ).json( { erro: 'Usuário não cadastrado' } );
 });
@@ -42,7 +42,20 @@ app.get( '/user/:username', function ( req, res ) {
 app.post( '/user', function( req, res ) {
   var username = req.body.username;
   var age = req.body.age;
-  res.json( { username: username, age: age } );  
+  var name = req.body.name;
+
+  var hasUser = users.some(function (user) {
+    return user.username === username;
+  });
+
+  if( !hasUser ) {
+    users.push( {
+      username: username,
+      name: name,
+      age: age
+    } );    
+  }
+  res.json( users );
 } );
 
 app.listen( 3000 );
